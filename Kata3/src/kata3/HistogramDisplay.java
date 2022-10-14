@@ -10,47 +10,47 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
 
 public class HistogramDisplay extends ApplicationFrame {
-    
-    public HistogramDisplay(String title){
+   
+    private final Histogram<String> histogram;
+   
+    public HistogramDisplay(String title, Histogram<String> histogram){
         super(title);
+        this.histogram = histogram;
         setContentPane(createPanel());
         pack();
-        
-    
+     
     }
-    
+   
     public void execute() {
         setVisible(true);
     }
-    
+   
     private JPanel createPanel(){
-        ChartPanel chartPanel= new ChartPanel(createChart(createDataSet())); 
+        ChartPanel chartPanel= new ChartPanel(createChart(createDataSet()));
         chartPanel.setPreferredSize(new Dimension(500, 400));
         return chartPanel;
-        
+       
     }
-    
+   
     private JFreeChart createChart(DefaultCategoryDataset dataset) {
-        JFreeChart chart = ChartFactory.createBarChart("Histogram Display", "Dominios de email", "Numero de emails", dataset, 
-                PlotOrientation.VERTICAL, 
-                false, 
-                false, 
+        JFreeChart chart = ChartFactory.createBarChart("Histogram Display", "Dominios de email", "Numero de emails", dataset,
+                PlotOrientation.VERTICAL,
+                false,
+                false,
                 rootPaneCheckingEnabled);
-        
+       
         return chart;
     }
-    
+   
     private DefaultCategoryDataset createDataSet(){
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        
-        dataset.addValue(3,"", "ulpgc.es");
-        dataset.addValue(1,"", "dis.ulpgc.es");
-        dataset.addValue(7,"", "eii.ulpgc.es");
-        dataset.addValue(15,"", "gmail.es");
-        dataset.addValue(5,"", "hotmail.es");
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();        
+     
+        for (String key : this.histogram.keySet()){
+            dataset.addValue(this.histogram.get(key), "", key);
+           
+        }
         
         return dataset;
-                
-              
+             
     }
 }
